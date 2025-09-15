@@ -1,0 +1,19 @@
+Node* insertAtK(Node* head, int k, int val) {
+    Node* newNode = new Node(val);
+
+    if (k == 1) {  // insert at head
+        newNode->next = head;
+        return newNode;
+    }
+
+    Node* temp = head;
+    for (int i = 1; temp != NULL && i < k - 1; i++) {
+        temp = temp->next;
+    }
+
+    if (temp == NULL) return head; // k is greater than length
+
+    newNode->next = temp->next;
+    temp->next = newNode;
+    return head;
+}
