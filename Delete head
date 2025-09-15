@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Node structure
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) {
+        data = val;
+        next = NULL;
+    }
+};
+
+// Function to delete head node
+Node* deleteHead(Node* head) {
+    if (head == NULL) return NULL; // empty list
+
+    Node* temp = head;   // store current head
+    head = head->next;   // move head to next
+    delete temp;         // free old head
+    return head;         // return new head
+}
+
+// Function to print list
+void printList(Node* head) {
+    while (head != NULL) {
+        cout << head->data << " ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Creating a sample linked list: 10 -> 20 -> 30
+    Node* head = new Node(10);
+    head->next = new Node(20);
+    head->next->next = new Node(30);
+
+    cout << "Original List: ";
+    printList(head);
+
+    head = deleteHead(head);  // deleting head
+
+    cout << "After Deletion at Head: ";
+    printList(head);
+
+    return 0;
+}
