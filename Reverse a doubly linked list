@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+    Node(int val) {
+        data = val;
+        prev = NULL;
+        next = NULL;
+    }
+};
+
+// Function to reverse a doubly linked list
+Node* reverseDLL(Node* head) {
+    if (!head || !head->next) return head;
+
+    Node* curr = head;
+    Node* temp = NULL;
+
+    // Traverse and swap prev & next for each node
+    while (curr != NULL) {
+        temp = curr->prev;
+        curr->prev = curr->next;
+        curr->next = temp;
+        curr = curr->prev; // move to "next" node (which is actually prev now)
+    }
+
+    // temp is now at the old head’s prev → move back one step
+    if (temp != NULL) {
+        head = temp->prev;
+    }
+
+    return head;
+}
+
+// Print DLL
+void printList(Node* head) {
+    while (head != NULL) {
+        cout << head->data << " ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Example: 1 <-> 2 <-> 3 <-> 4
+    Node* head = new Node(1);
+    head->next = new Node(2);
+    head->next->prev = head;
+    head->next->next = new Node(3);
+    head->next->next->prev = head->next;
+    head->next->next->next = new Node(4);
+    head->next->next->next->prev = head->next->next;
+
+    cout << "Original DLL: ";
+    printList(head);
+
+    head = reverseDLL(head);
+
+    cout << "Reversed DLL: ";
+    printList(head);
+
+    return 0;
+}
