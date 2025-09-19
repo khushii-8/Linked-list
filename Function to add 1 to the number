@@ -1,0 +1,80 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+// Function to reverse linked list
+Node* reverse(Node* head) {
+    Node* prev = nullptr;
+    Node* curr = head;
+    Node* next = nullptr;
+
+    while (curr) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+
+// Function to add 1 to the number
+Node* addOne(Node* head) {
+    // Step 1: Reverse list
+    head = reverse(head);
+
+    Node* curr = head;
+    int carry = 1; // since we are adding 1
+
+    // Step 2: Traverse and add carry
+    while (curr && carry) {
+        int sum = curr->data + carry;
+        curr->data = sum % 10;
+        carry = sum / 10;
+
+        if (!curr->next && carry) {
+            curr->next = new Node(carry); // create new node if needed
+            carry = 0;
+        }
+        curr = curr->next;
+    }
+
+    // Step 3: Reverse back to original order
+    head = reverse(head);
+    return head;
+}
+
+// Function to print linked list
+void printList(Node* head) {
+    while (head) {
+        cout << head->data;
+        if (head->next) cout << " -> ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Example: 1999
+    Node* head = new Node(1);
+    head->next = new Node(9);
+    head->next->next = new Node(9);
+    head->next->next->next = new Node(9);
+
+    cout << "Original Number: ";
+    printList(head);
+
+    head = addOne(head);
+
+    cout << "After Adding 1: ";
+    printList(head);
+
+    return 0;
+}
