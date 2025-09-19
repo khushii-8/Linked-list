@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+// Function to detect loop and return starting node
+Node* detectLoop(Node* head) {
+    Node* slow = head;
+    Node* fast = head;
+
+    // Step 1: Detect loop using Floyd’s cycle detection
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast) { // Loop detected
+            // Step 2: Find starting node
+            slow = head;
+            while (slow != fast) {
+                slow = slow->next;
+                fast = fast->next;
+            }
+            return slow; // Starting node of loop
+        }
+    }
+    return nullptr; // No loop
+}
+
+// Helper function to print list safely (only till some steps to avoid infinite loop)
+void printList(Node* head, int limit = 15) {
+    Node* temp = head;
+    int count = 0;
+    while (temp && count < limit) {
+        cout << temp->data << " ";
+        temp = temp->next;
+        count++;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Creating nodes
+    Node* head = new Node(1);
+    head->next = new Node(2);
+    head->next->next = new Node(3);
+    head->next->next->next = new Node(4);
+    head->next->next->next->next = new Node(5);
+
+    // Create a loop: 5 -> 3
+    head->next->next->next->next->next = head->next->next;
+
+    Node* loopStart = detectLoop(head);
+    if (loopStart)
+        cout << "Loop starts at node with value: " << loopStart->data << endl;
+    else
+        cout << "No loop detected" << endl;
+
+    return 0;
+}
