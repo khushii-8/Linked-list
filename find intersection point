@@ -1,0 +1,56 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+// Function to find intersection point
+Node* getIntersectionNode(Node* headA, Node* headB) {
+    if (!headA || !headB) return nullptr;
+
+    Node* a = headA;
+    Node* b = headB;
+
+    // Traverse until both meet or reach end
+    while (a != b) {
+        a = (a == nullptr) ? headB : a->next;
+        b = (b == nullptr) ? headA : b->next;
+    }
+    return a; // Either intersection node or NULL
+}
+
+int main() {
+    // Create two linked lists
+
+    // List A: 1 -> 2
+    Node* headA = new Node(1);
+    headA->next = new Node(2);
+
+    // List B: 3 -> 7
+    Node* headB = new Node(3);
+    headB->next = new Node(7);
+
+    // Common part: 8 -> 10
+    Node* common = new Node(8);
+    common->next = new Node(10);
+
+    // Attach common part
+    headA->next->next = common;
+    headB->next->next = common;
+
+    // Find intersection
+    Node* intersect = getIntersectionNode(headA, headB);
+
+    if (intersect)
+        cout << "Intersection at node with value: " << intersect->data << endl;
+    else
+        cout << "No intersection." << endl;
+
+    return 0;
+}
