@@ -1,0 +1,80 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Node structure
+struct Node {
+    int data;
+    Node* next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+// Merge two sorted lists
+Node* mergeTwoLists(Node* l1, Node* l2) {
+    Node* dummy = new Node(0);
+    Node* tail = dummy;
+
+    while (l1 != NULL && l2 != NULL) {
+        if (l1->data < l2->data) {
+            tail->next = l1;
+            l1 = l1->next;
+        } else {
+            tail->next = l2;
+            l2 = l2->next;
+        }
+        tail = tail->next;
+    }
+
+    // Attach remaining nodes
+    if (l1 != NULL) tail->next = l1;
+    else tail->next = l2;
+
+    return dummy->next;
+}
+
+// Merge k lists one by one
+Node* mergeKLists(vector<Node*>& lists) {
+    if (lists.empty()) return NULL;
+
+    Node* result = lists[0]; // start with first list
+
+    for (int i = 1; i < lists.size(); i++) {
+        result = mergeTwoLists(result, lists[i]); // merge one by one
+    }
+
+    return result;
+}
+
+// Print linked list
+void printList(Node* head) {
+    while (head != NULL) {
+        cout << head->data << " ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Example: k = 3 lists
+    Node* l1 = new Node(1);
+    l1->next = new Node(4);
+    l1->next->next = new Node(7);
+
+    Node* l2 = new Node(2);
+    l2->next = new Node(5);
+    l2->next->next = new Node(8);
+
+    Node* l3 = new Node(3);
+    l3->next = new Node(6);
+    l3->next->next = new Node(9);
+
+    vector<Node*> lists = {l1, l2, l3};
+
+    Node* result = mergeKLists(lists);
+    printList(result);
+
+    return 0;
+}
