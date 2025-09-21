@@ -1,0 +1,37 @@
+
+class Solution {
+public:
+    // reverse linked list
+    ListNode* reverse(ListNode* curr, ListNode * prev){
+        if(curr==NULL){
+            return prev;
+        }
+
+        ListNode * front= curr->next;
+        curr->next= prev;
+      return   reverse(front,curr);
+    } 
+
+    ListNode* removeNodes(ListNode* head) {
+        stack<int>s;
+        ListNode * curr=head;
+        while(curr){
+            while(!s.empty() && s.top()< curr->val){
+                s.pop();
+            }
+            s.push(curr->val);
+            curr=curr->next;
+        }
+        ListNode * newhead= new ListNode(0);
+        curr=newhead;
+        while(!s.empty()){
+            curr->next=new ListNode(s.top());
+            curr=curr->next;
+            s.pop();
+        }
+
+        curr->next=NULL;
+        return head= reverse(newhead->next,NULL);
+    }
+};
+// 19, 18,6
